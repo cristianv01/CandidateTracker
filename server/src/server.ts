@@ -16,22 +16,18 @@ app.use(express.json()); // Middleware to parse JSON bodies
 
 //--- DB Connection Pool
 const pool = new Pool({connectionString: process.env.DATABASE_URL,});
-// Use an async IIFE to handle top-level await
+
 (async () => {
     try {
       // Test the connection
       const client = await pool.connect();
       console.log('[server]: Database connected successfully!');
   
-      // Example query (optional here, better in route handlers)
-      // const res = await client.query('SELECT $1::text as message', ['Hello world!']);
-      // console.log('[server]: DB Query Result:', res.rows[0].message);
   
-      client.release(); // Release the client back to the pool
+      client.release();
     } catch (err) {
       console.error('[server]: Failed to connect to the database.', err);
-      // Optionally exit the process if DB connection is critical
-      // process.exit(1);
+      
     }
   })();
 //----API ROUTES----
